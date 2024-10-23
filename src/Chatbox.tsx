@@ -4,8 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from './logo-removebg-preview.png';
 import { withFuncProps } from "./withFuncProps";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'; // Import the specific icon you need
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import SpeechDetection from './SpeechDetection'; // Import the speech detection component
 
 class Chatbox extends React.Component<any, any> {
   constructor(props: any) {
@@ -24,11 +25,6 @@ class Chatbox extends React.Component<any, any> {
     this.setState({ prompt: event.target.value });
   };
 
-  handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    console.log("Form submitted!");
-  }
-
   handleAISubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     try {
@@ -41,6 +37,10 @@ class Chatbox extends React.Component<any, any> {
     }
   };
 
+  handleSpeechDetection = (transcript: string) => {
+    this.setState({ prompt: transcript });
+  };
+
   render() {
     const { prompt, response } = this.state;
     return (
@@ -51,6 +51,9 @@ class Chatbox extends React.Component<any, any> {
           <p className='midLineChatbox'>
             You can speak or type any questions. How can I help you? 
           </p>
+
+          <SpeechDetection onDetect={this.handleSpeechDetection} />
+
           <div className="inputSection">
             <input
               className="inputBar"
